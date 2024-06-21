@@ -1,19 +1,22 @@
 // src/components/ChatRoom.js
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:3000'); // Change to your server URL
 
 const ChatRoom = ({ room }) => {
-    const [messages, setMessages] = useState([]);
+    const [roomMessages, setRoomMessages] = useState({});
     const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
         if (room) {
             socket.emit('join', room.id);
 
-            socket.on('message', message => {
-                setMessages(prevMessages => [...prevMessages, message]);
+            socket.on('message', (message) => {
+                setRoomMessages((prevMessages) => ({
+                    ...prevMessages,
+                    [message.roomId]: [...(prevMessages[message.roomId] || []), message]
+                }));
             });
 
             return () => {
@@ -25,7 +28,12 @@ const ChatRoom = ({ room }) => {
 
     const sendMessage = () => {
         if (newMessage.trim()) {
-            socket.emit('message', { roomId: room.id, text: newMessage });
+            const message = { roomId: room.id, text: newMessage, sender: 'Me' }; // Adding sender for demo purposes
+            socket.emit('message', message);
+            setRoomMessages((prevMessages) => ({
+                ...prevMessages,
+                [room.id]: [...(prevMessages[room.id] || []), message]
+            }));
             setNewMessage('');
         }
     };
@@ -34,8 +42,9 @@ const ChatRoom = ({ room }) => {
         <div className="chat-room">
             <h2>{room.name}</h2>
             <div className="messages">
-                {messages.map((message, index) => (
+                {(roomMessages[room.id] || []).map((message, index) => (
                     <div key={index} className="message">
+                        <strong>{message.sender}: </strong>
                         {message.text}
                     </div>
                 ))}
@@ -44,8 +53,9 @@ const ChatRoom = ({ room }) => {
                 <input
                     type="text"
                     value={newMessage}
-                    onChange={e => setNewMessage(e.target.value)}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type a message..."
+                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                 />
                 <button onClick={sendMessage}>Send</button>
             </div>
