@@ -9,11 +9,13 @@ const ChatRoom = ({ room }) => {
     const [roomMessages, setRoomMessages] = useState({});
     const [newMessage, setNewMessage] = useState('');
 
+    // Prompt for username when component mounts
     useEffect(() => {
         const name = prompt('Please enter your name:');
         setUsername(name);
     }, []);
 
+    // Join the room and set up message listener
     useEffect(() => {
         if (room) {
             socket.emit('join', room.id);
@@ -32,14 +34,11 @@ const ChatRoom = ({ room }) => {
         }
     }, [room]);
 
+    // Send a new message
     const sendMessage = () => {
         if (newMessage.trim() && username) {
             const message = { roomId: room.id, text: newMessage, sender: username };
             socket.emit('message', message);
-            setRoomMessages((prevMessages) => ({
-                ...prevMessages,
-                [room.id]: [...(prevMessages[room.id] || []), message]
-            }));
             setNewMessage('');
         }
     };
@@ -50,7 +49,7 @@ const ChatRoom = ({ room }) => {
             <div className="messages">
                 {(roomMessages[room.id] || []).map((message, index) => (
                     <div key={index} className="message">
-                        <strong>{message.sender}: </strong>
+                        <strong>{message.sender}: </strong> {/* Display sender's name */}
                         {message.text}
                     </div>
                 ))}
