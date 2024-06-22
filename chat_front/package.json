@@ -18,6 +18,9 @@
   },
   "scripts": {
     "start": "react-scripts start --openssl-legacy-provider",
+    "start:port1": "PORT=3001 react-scripts start",
+    "start:port2": "PORT=3002 react-scripts start",
+    "start:port3": "PORT=3003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
