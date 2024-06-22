@@ -1,12 +1,18 @@
-// src/components/ChatRoom.js
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
+//import './ChatRoom.css';
 
-const socket = io('http://localhost:3000'); // Change to your server URL
+const socket = io('http://localhost:3000');
 
 const ChatRoom = ({ room }) => {
+    const [username, setUsername] = useState('');
     const [roomMessages, setRoomMessages] = useState({});
     const [newMessage, setNewMessage] = useState('');
+
+    useEffect(() => {
+        const name = prompt('Please enter your name:');
+        setUsername(name);
+    }, []);
 
     useEffect(() => {
         if (room) {
@@ -27,8 +33,8 @@ const ChatRoom = ({ room }) => {
     }, [room]);
 
     const sendMessage = () => {
-        if (newMessage.trim()) {
-            const message = { roomId: room.id, text: newMessage, sender: 'Me' }; // Adding sender for demo purposes
+        if (newMessage.trim() && username) {
+            const message = { roomId: room.id, text: newMessage, sender: username };
             socket.emit('message', message);
             setRoomMessages((prevMessages) => ({
                 ...prevMessages,
