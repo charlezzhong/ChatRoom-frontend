@@ -11,12 +11,8 @@ const ChatRoom = ({ room }) => {
 
     const createUser = async (name) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/users', JSON.stringify({ name }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log('User created:', response.data);
+            await axios.post('http://localhost:3000/api/v1/users', { name });
+            console.log('User created:', name);
         } catch (error) {
             console.error('Error creating user:', error);
         }
