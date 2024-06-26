@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 //import './ChatRoom.css';
+import axios from 'axios';
 
 const socket = io('http://localhost:3000');
 
 const ChatRoom = ({ room }) => {
     const [username, setUsername] = useState('');
     const [promptDisplayed, setPromptDisplayed] = useState(false);
+
+    const createUser = async (name) => {
+        try {
+            const response = await axios.post('http://localhost:3000/api/v1/users', JSON.stringify({ name }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('User created:', response.data);
+        } catch (error) {
+            console.error('Error creating user:', error);
+        }
+    };
 
     // Prompt for username only once when component mounts
     useEffect(() => {
@@ -16,6 +30,7 @@ const ChatRoom = ({ room }) => {
             const name = prompt('Please enter your name:');
             if (name) {
                 setUsername(name);
+                createUser(name);  // Call to create user in the database
                 setPromptDisplayed(true);
             }
         }
