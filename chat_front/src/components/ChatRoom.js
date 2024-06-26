@@ -5,33 +5,7 @@ import axios from 'axios';
 
 const socket = io('http://localhost:3000');
 
-const ChatRoom = ({ room }) => {
-    const [username, setUsername] = useState('');
-    const [promptDisplayed, setPromptDisplayed] = useState(false);
-
-    const createUser = async (name) => {
-        try {
-            await axios.post('http://localhost:3000/api/v1/users', { name });
-            console.log('User created:', name);
-        } catch (error) {
-            console.error('Error creating user:', error);
-        }
-    };
-
-    // Prompt for username only once when component mounts
-    useEffect(() => {
-        console.log(`current user is: ${username}`);
-        console.log(`current promptDisplayed: ${promptDisplayed}`);
-        if (!promptDisplayed) {
-            const name = prompt('Please enter your name:');
-            if (name) {
-                setUsername(name);
-                createUser(name);  // Call to create user in the database
-                setPromptDisplayed(true);
-            }
-        }
-    }, []); // Only run this effect once when component mounts
-
+const ChatRoom = ({ room, username }) => {
     // Other state variables
     const [roomMessages, setRoomMessages] = useState({});
     const [newMessage, setNewMessage] = useState('');

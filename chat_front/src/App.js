@@ -33,7 +33,7 @@ const App = () => {
                         </div>
                         <div className="chat-room-container">
                             {selectedRoom ? (
-                                <ChatRoom room={selectedRoom} />
+                                <ChatRoom room={selectedRoom} username={username} />
                             ) : (
                                 <div>Please select a chat room</div>
                             )}
