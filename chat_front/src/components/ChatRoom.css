@@ -1,0 +1,58 @@
+/* src/components/ChatRoom.css */
+.chat-room {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.message {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+.my-message {
+    align-self: flex-end;
+    background-color: #dcf8c6;
+    text-align: right;
+}
+
+.other-message {
+    align-self: flex-start;
+    background-color: #f1f0f0;
+}
+
+.message-input {
+    display: flex;
+    padding: 10px;
+    background: #eee;
+}
+
+.message-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.message-input button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #45a049;
+}

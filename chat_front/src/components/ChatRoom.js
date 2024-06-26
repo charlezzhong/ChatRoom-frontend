@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
-//import './ChatRoom.css';
+import './ChatRoom.css';
 import axios from 'axios';
 
 const socket = io('http://localhost:3000');
@@ -46,7 +46,8 @@ const ChatRoom = ({ room, username }) => {
                     <h2>{room.name}</h2>
                     <div className="messages">
                         {(roomMessages[room.id] || []).map((message, index) => (
-                            <div key={index} className="message">
+                            <div key={index} 
+                                className={`message ${message.sender === username ? 'my-message' : 'other-message'}`}>
                                 <strong>{message.sender}: </strong>
                                 {message.text}
                             </div>
