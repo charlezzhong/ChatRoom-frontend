@@ -18,6 +18,14 @@ const App = () => {
         setUsername(username);
     };
 
+    function onsetSelectedRoom(room){
+        console.log("set from app")
+        if (room !== selectedRoom) {
+            setSelectedRoom(room);
+        }
+    }
+    console.log("room: ", selectedRoom);
+
     return (
         <Router>
             <div className="app">
@@ -29,11 +37,11 @@ const App = () => {
                 ) : (
                     <>
                         <div className="sidebar">
-                            <ChatRoomsList chatRooms={chatRooms} onSelectRoom={setSelectedRoom} />
+                            <ChatRoomsList chatRooms={chatRooms} onSelectRoom={onsetSelectedRoom} />
                         </div>
                         <div className="chat-room-container">
                             {selectedRoom ? (
-                                <ChatRoom room={selectedRoom} username={username} />
+                                <ChatRoom key={selectedRoom.id} room={selectedRoom} username={username} />
                             ) : (
                                 <div>Please select a chat room</div>
                             )}
