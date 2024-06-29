@@ -1,5 +1,4 @@
-// src/App.js
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ChatRoomsList from './components/ChatRoomsList';
 import ChatRoom from './components/ChatRoom';
@@ -18,13 +17,13 @@ const App = () => {
         setUsername(username);
     };
 
-    function onsetSelectedRoom(room){
-        console.log("set from app")
+    const handleSelectRoom = (room) => {
         if (room !== selectedRoom) {
             setSelectedRoom(room);
         }
-    }
-    console.log("room: ", selectedRoom);
+    };
+
+    const memoizedSelectedRoom = useMemo(() => selectedRoom, [selectedRoom]);
 
     return (
         <Router>
@@ -37,11 +36,11 @@ const App = () => {
                 ) : (
                     <>
                         <div className="sidebar">
-                            <ChatRoomsList chatRooms={chatRooms} onSelectRoom={onsetSelectedRoom} />
+                            <ChatRoomsList chatRooms={chatRooms} onSelectRoom={handleSelectRoom} />
                         </div>
                         <div className="chat-room-container">
-                            {selectedRoom ? (
-                                <ChatRoom key={selectedRoom.id} room={selectedRoom} username={username} />
+                            {memoizedSelectedRoom ? (
+                                <ChatRoom room={memoizedSelectedRoom} username={username} />
                             ) : (
                                 <div>Please select a chat room</div>
                             )}

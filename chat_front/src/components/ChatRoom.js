@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import socket from './socket'; // Import the socket instance
+import socket from './socket';
 import './ChatRoom.css';
 
 const ChatRoom = ({ room, username }) => {
